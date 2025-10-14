@@ -30,17 +30,17 @@ export default function LoginPage() {
     return null; // Will redirect
   }
 
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 relative overflow-hidden">
-          {/* Background elements */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl -translate-x-48 -translate-y-48"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl translate-x-48 translate-y-48"></div>
-          
-          <div className="relative flex items-center justify-center min-h-screen p-4">
-            <div className="max-w-md w-full md:max-w-lg">
-              <LoginForm onSuccess={() => router.push('/')} />
-            </div>
-          </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl -translate-x-48 -translate-y-48"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl translate-x-48 translate-y-48"></div>
+      
+      <div className="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+        <div className="w-full max-w-md md:max-w-2xl lg:max-w-4xl">
+          <LoginForm onSuccess={() => router.push('/')} />
         </div>
-      );
+      </div>
+    </div>
+  );
 }

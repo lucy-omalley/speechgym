@@ -12,6 +12,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<{ error: any }>;
+  resendConfirmation: (email: string) => Promise<{ error: any }>;
 }
 
 interface UserProfile {
@@ -83,10 +84,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      // Check if email is confirmed
+      if (data.user && !data.user.email_confirmed_at) {
+        return { 
+          error: { 
+            message: 'Please check your email and click the confirmation link to activate your account.' 
+          } 
+        };
+      }
 
       return { error };
     } catch (error) {
@@ -114,6 +124,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const resendConfirmation = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+      });
+
+      return { error };
+    } catch (error) {
+      return { error: new Error('Authentication service not available') };
+    }
+  };
+
   const value = {
     user,
     session,
@@ -122,6 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signOut,
     updateProfile,
+    resendConfirmation,
   };
 
   return (
